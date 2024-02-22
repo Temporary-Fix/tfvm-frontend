@@ -23,6 +23,11 @@
       "react-app/jest"
     ]
   },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional",
+    ]
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -36,6 +41,8 @@
     ]
   },
   "devDependencies": {
+    "@commitlint/cli": "^18.6.1",
+    "@commitlint/config-conventional": "^18.6.2",
     "react-test-renderer": "^18.2.0"
   }
 }
