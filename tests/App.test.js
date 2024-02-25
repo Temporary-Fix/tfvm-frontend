@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import App from '../src/App.jsx';
 
-test('renders Vite + React', () => {
+test('Displays Product Name', () => {
   render(<App />);
-  const linkElement = screen.getByText("Vite + React");
+  const linkElement = screen.getByText("Temp Fix Travel Planner");
   expect(linkElement).toBeInTheDocument();
 });
