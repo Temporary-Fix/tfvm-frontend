@@ -31,7 +31,27 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-svg-transformer": "^1.0.0",
     "react-test-renderer": "^18.2.0",
-    "vite": "^5.1.4"
+    "vite": "^5.1.4",
+    "@commitlint/cli": "^18.6.1",
+    "@commitlint/config-conventional": "^18.6.2",
+    "husky": "^9.0.11"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "jest": {
     "testEnvironment": "jsdom",
