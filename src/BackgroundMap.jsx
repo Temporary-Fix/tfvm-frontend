@@ -1,43 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow, useMap } from '@vis.gl/react-google-maps'
 
-function BackgroundMap({ location }) {
-    const [map, setMap] = useState(null);
-    const mapContainerRef = useRef(null);
+export default function BackgroundMap({ location }) {
 
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBH2Hs12RUpu_z2mTTex0FBnxRi9diSRHM&callback=initMap`;
-        script.defer = true;
-        script.async = true;
-
-        window.initMap = () => {
-            const mapInstance = new window.google.maps.Map(mapContainerRef.current, {
-                center: location,
-                zoom: 12,
-            });
-            setMap(mapInstance);
-        };
-
-        document.head.appendChild(script);
-
-        return () => {
-            document.head.removeChild(script);
-        };
-    }, [location]);
-
-    useEffect(() => {
-        if (map && location) {
-            new window.google.maps.Marker({ position: location, map: map });
-            map.setCenter(location);
-        }
-    }, [map, location]);
+    const _onClick = (e) => {
+        console.log(JSON.stringify(e.detail.latLng));
+    };
 
     return (
-        <div
-        style={{ width: '100vw', height: '100vh' }}
-        ref={mapContainerRef}
-        />
+        // TODO: move keys and ids to env
+        <APIProvider apiKey="AIzaSyBH2Hs12RUpu_z2mTTex0FBnxRi9diSRHM">
+            <div style={{ height: '100vh', width: '100wh' }}>
+                <Map
+                    defaultZoom={12}
+                    defaultCenter={location}
+                    mapId="83e6a4c4d2e69d8d"
+                    gestureHandling={'greedy'}
+                    disableDefaultUI={true}
+                    onClick={_onClick}
+                >
+                    <AdvancedMarker position={location}/>
+                </Map>
+            </div>
+        </APIProvider>
     );
 }
-
-export default BackgroundMap;
