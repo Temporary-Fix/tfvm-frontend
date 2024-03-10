@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import BackgroundMap from '../src/BackgroundMap.jsx';
+import BackgroundMap from '../src/components/BackgroundMap/BackgroundMap.jsx';
 
 test('Sample test', () => {
     render(<BackgroundMap />);

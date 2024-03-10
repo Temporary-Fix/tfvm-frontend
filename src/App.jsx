@@ -1,4 +1,4 @@
-import BackgroundMap from './BackgroundMap.jsx'
+import BackgroundMap from './components/BackgroundMap/BackgroundMap.jsx'
 import './App.css'
 
 export default function App() {
