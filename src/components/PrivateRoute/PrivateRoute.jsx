@@ -1,15 +1,10 @@
 import { useAuth } from '../AuthProvider/AuthProvider'
-import { useEffect } from 'react'
 import { Navigate, Outlet, Route } from 'react-router-dom'
 
 import { CircularProgress } from '@mui/material';
 
 export const PrivateRoutes = () => {
-    const { authLoading, isLoggedIn, checkAuth } = useAuth();
-
-    useEffect(() => {
-        checkAuth();
-    }, []);
+    const { authLoading, isLoggedIn } = useAuth();
 
     if (authLoading) {
         return (<CircularProgress />)
@@ -20,11 +15,7 @@ export const PrivateRoutes = () => {
 }
 
 export const PrivateRoute = ({children, ...rest}) => {
-    const { authLoading, isLoggedIn, checkAuth } = useAuth();
-
-    useEffect(() => {
-        checkAuth();
-    }, []);
+    const { authLoading, isLoggedIn } = useAuth();
 
     if (authLoading) {
         return (<CircularProgress />)

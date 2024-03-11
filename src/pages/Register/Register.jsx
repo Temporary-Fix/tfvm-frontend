@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react';
-import { useTheme } from '@mui/material/styles';
-import { useNavigate } from "react-router-dom";
+import React from 'react';
 
 //MUI component imports
-import { Container, Box, Avatar, Typography, Button, Paper, Alert } from '@mui/material';
+import { Container, Box, Avatar, Typography, Button, Paper, Alert, CircularProgress } from '@mui/material';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 
 //Auth import
@@ -39,18 +37,7 @@ const initialValues = {
 };
 
 function Register() {
-    const theme = useTheme();
-    const navigate = useNavigate();
-
-    const { login, isLoggedIn, checkAuth } = useAuth();
-
-    //Use this instead of UnauthRoute because form affects IsLoggedIn, so this prevents page reload on form submission
-    useEffect(() => {
-        checkAuth();
-        if (isLoggedIn) {
-            navigate('/');
-        }
-    }, [isLoggedIn]);
+    const { setNewSessionTimed } = useAuth();
 
     return (
         // Container centers login card
@@ -81,8 +68,9 @@ function Register() {
                     validationSchema={validationSchema}
                     onSubmit={async (values, {setStatus, setErrors}) => {
                         try {
+                            //Dont use register user to prevent form reload
                             const response = await axiosInstance.post('/users/', values);
-                            navigate('/');
+                            setNewSessionTimed(response.data, 500); 
                         }
                         catch (error) {
 
@@ -95,7 +83,7 @@ function Register() {
                         }
                     }}
                 >
-                {({ status }) => (
+                {({ status, isSubmitting }) => (
                 <Form>
 
                     <Box sx={{ mt: 2, mb: 2 }}>
@@ -144,9 +132,13 @@ function Register() {
                             type="password"
                             sx={{ mb: 2 }}
                         />
-                        <Button color="primary" variant="contained" fullWidth type="submit" sx={{ mb: 2 }}>
-                            Submit
-                        </Button>
+                        { isSubmitting ? 
+                                <CircularProgress sx={{ mb: 2}}/> 
+                                :
+                                <Button color="primary" variant="contained" fullWidth type="submit" sx={{ mb: 2 }}>
+                                    Submit
+                                </Button>
+                        }
                     </Box>
 
                 </Form>

@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from "react-router-dom";
 
+import axiosInstance from '../../axios';
+
 //MUI component imports
-import { Container, Box, Avatar, Typography, Button, Link, Paper, Alert } from '@mui/material';
+import { Container, Box, Avatar, Typography, Button, Link, Paper, Alert, CircularProgress } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'; 
-import { useTheme } from '@mui/material/styles';
 
 //Form schema/validator imports
 import * as Yup from 'yup';
@@ -29,18 +30,13 @@ const initialValues = {
 };
 
 function Login() {
-    const theme = useTheme();
+
+    const { setNewSessionTimed } = useAuth();
     const navigate = useNavigate();
 
-    const { login, isLoggedIn, checkAuth } = useAuth();
-
-    //Use this instead of UnauthRoute because form affects IsLoggedIn, so this prevents page reload on form submission
-    useEffect(() => {
-        checkAuth();
-        if (isLoggedIn) {
-            navigate('/');
-        }
-    }, [isLoggedIn]);
+    function navigateToRegister() {
+        navigate('/register');
+    }
 
     return (
         // Container centers login card
@@ -69,8 +65,9 @@ function Login() {
                     validationSchema={validationSchema}
                     onSubmit={async (values, {setStatus}) => {
                         try {
-                            await login(values);
-                            navigate('/');
+                            //Dont use login to prevent page reload
+                            const response = await axiosInstance.post('/login', values);
+                            setNewSessionTimed(response.data, 500);
                         }
                         catch (error) {
 
@@ -78,12 +75,12 @@ function Login() {
                                 setStatus({message: error.response.data['message']});
                             }
                             else {
-                                setStatus({message: 'Error sending request to server'});
+                                setStatus({message: 'Did not receive response from server'});
                             }
                         }
                     }}
                 >
-                {({ status }) => (
+                {({ status, isSubmitting }) => (
                 <Form>
                     { (status && status.message) ? <Alert severity="error">{status.message}</Alert> : null }
                     <Box sx={{ mt: 2, mb: 2 }}>
@@ -103,14 +100,21 @@ function Login() {
                             sx={{ mb: 2 }}
                         />
                     </Box>
-                    <Button color="primary" variant="contained" fullWidth type="submit" sx={{ mb: 2 }}>
-                        Submit
-                    </Button>
+                    { isSubmitting ? 
+                            <CircularProgress sx={{ mb: 2}}/> 
+                            :
+                            <Button color="primary" variant="contained" fullWidth type="submit" sx={{ mb: 2 }}>
+                                Submit
+                            </Button>
+                    }
                 </Form>
                 )}
                 </Formik>
+                
+                 
 
-                <Link href="/register" variant="body2">
+
+                <Link onClick={navigateToRegister} variant="body2">
                     Don't have an account? Sign Up
                 </Link>
 

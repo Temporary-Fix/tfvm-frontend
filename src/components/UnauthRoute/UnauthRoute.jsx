@@ -1,30 +1,21 @@
 import { useAuth } from '../AuthProvider/AuthProvider'
-import { useEffect } from 'react'
 import { Navigate, Outlet, Route } from 'react-router-dom'
 
 import { CircularProgress } from '@mui/material';
 
 export const UnauthRoutes = () => {
-    const { authLoading, isLoggedIn, checkAuth } = useAuth();
-
-    useEffect(() => {
-        checkAuth();
-    }, []);
+    const { authLoading, isLoggedIn } = useAuth();
 
     if (authLoading) {
         return (<CircularProgress />)
     }
     else {
-        return (isLoggedIn ? <Navigate to='/'/> : <Outlet/>)
+        return (!isLoggedIn ? <Outlet/> : <Navigate to='/'/> )
     }
 }
 
 export const UnauthRoute = ({children, ...rest}) => {
-    const { authLoading, isLoggedIn, checkAuth } = useAuth();
-
-    useEffect(() => {
-        checkAuth();
-    }, []);
+    const { authLoading, isLoggedIn } = useAuth();
 
     if (authLoading) {
         return (<CircularProgress />)

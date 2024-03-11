@@ -9,18 +9,20 @@ export default function BackgroundMap({ location, api_key, map_id }) {
 
     return (
         // TODO: move keys and ids to env
-        <APIProvider apiKey={api_key}>
-            <Map
-                defaultZoom={12}
-                defaultCenter={location}
-                mapId={map_id}
-                gestureHandling={'greedy'}
-                disableDefaultUI={true}
-                onClick={_onClick}
-            >
-                <AdvancedMarker position={location}/>
-            </Map>
-        </APIProvider>
+        <div style={{ position: 'absolute', top: '0', left: '0', width: '100vw', height: '100vh' }}>
+            <APIProvider apiKey={api_key}>
+                <Map
+                    defaultZoom={12}
+                    defaultCenter={location}
+                    mapId={map_id}
+                    gestureHandling={'greedy'}
+                    disableDefaultUI={true}
+                    onClick={_onClick}
+                >
+                    <AdvancedMarker position={location}/>
+                </Map>
+            </APIProvider>
+        </div>
     );
 }
 

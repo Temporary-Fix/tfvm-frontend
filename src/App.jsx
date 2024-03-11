@@ -7,6 +7,7 @@ import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
 import Landing from './pages/Landing/Landing'
 import { PrivateRoutes } from './components/PrivateRoute/PrivateRoute'
+import { UnauthRoutes } from './components/UnauthRoute/UnauthRoute'
 
 //Css imports
 import './styles/App.css'
@@ -24,8 +25,10 @@ function App() {
                 <Route path='/map' element={ <BackgroundMap location={location} map_id={mapId} api_key={apiKey} /> } />
             </Route>
             
-            <Route path='/register' element={ <Register /> } />
-            <Route path='/login' element={ <Login /> } />
+            <Route element={<UnauthRoutes/>}>
+                <Route path='/register' element={ <Register /> } />
+                <Route path='/login' element={ <Login /> } />
+            </Route>
 
         </Routes>
     );
