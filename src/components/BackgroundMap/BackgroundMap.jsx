@@ -23,3 +23,4 @@ export default function BackgroundMap({ location, api_key, map_id }) {
         </APIProvider>
     );
 }
+

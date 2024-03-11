@@ -29,6 +29,11 @@ function Landing() {
         return navigate('/register');
     }
 
+    const mapPage = () => {
+
+        return navigate('/map');
+    }
+
     return (
         // Container centers login card
         <Container component="main" maxWidth="xs"> 
@@ -48,6 +53,9 @@ function Landing() {
         </Button>
         <Button color="primary" variant="contained" fullWidth onClick={loginPage} sx={{ mb: 2 }}>
             Sign in page
+        </Button>
+        <Button color="primary" variant="contained" fullWidth onClick={mapPage} sx={{ mb: 2 }}>
+            Map
         </Button>
         <Button color="primary" variant="contained" fullWidth onClick={registerPage} sx={{ mb: 2 }}>
             Register page
