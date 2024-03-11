@@ -1,0 +1,20 @@
+version: '3'
+# For dev purposes
+
+services:
+
+  capstone_proxy:
+    image: nginx:latest
+    container_name: capstone_proxy_dev
+    restart: always
+    volumes:
+      - ./nginx/dev_templates:/etc/nginx/templates
+      - ./nginx/dev_conf/nginx.conf:/etc/nginx/nginx.conf
+      - frontend_build:/etc/build
+    ports:
+      - 80:80
+      - 443:443
+
+volumes:
+  frontend_build:
+    external: true
