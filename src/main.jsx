@@ -5,16 +5,18 @@ import App from './App'
 import './styles/index.css'
 import { themeOptions } from './styles/theme'
 import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+
+import { AuthProvider } from './components/AuthProvider/AuthProvider';
 
 let theme = createTheme(themeOptions);
 theme = responsiveFontSizes(theme);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
+        <AuthProvider>
         <ThemeProvider theme={theme}>
-            <CssBaseline/>
             <App />
         </ThemeProvider>
+        </AuthProvider>
     </BrowserRouter>,
 )
