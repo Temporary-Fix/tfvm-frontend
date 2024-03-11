@@ -1,14 +1,36 @@
-import BackgroundMap from './components/BackgroundMap/BackgroundMap.jsx'
-import './App.css'
+//Router imports
+import { Routes, Route } from "react-router-dom"
 
-export default function App() {
-    const location = { lat: 30.5446, lng: -87.2120 };
-    const mapId = import.meta.env.VITE_GOOGLE_MAPS_MAP_ID
-    const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+//Component imports
+import BackgroundMap from './components/BackgroundMap/BackgroundMap'
+import Login from './pages/Login/Login'
+import Register from './pages/Register/Register'
+import Landing from './pages/Landing/Landing'
+import { PrivateRoutes } from './components/PrivateRoute/PrivateRoute'
+import { UnauthRoute, UnauthRoutes } from './components/UnauthRoute/UnauthRoute'
+
+//Css imports
+import './styles/App.css'
+
+const location = { lat: 30.5446, lng: -87.2120 }; // Example location - San Francisco
+
+function App() {
 
     return (
-        <div style={{ position: 'absolute', top: '0', left: '0', width: '100vw', height: '100vh' }}>
-            <BackgroundMap location={location} map_id={mapId} api_key={apiKey}/>
-        </div>
+        <Routes>
+        { /* <Route path='/' element={ <BackgroundMap location={location} /> } /> */ }
+            <Route element={<PrivateRoutes/>}>
+                <Route path='/' element={ <Landing /> } />
+            </Route>
+            
+            <Route path='/register' element={ <Register /> } />
+            <Route path='/login' element={ <Login /> } />
+            <Route element={<UnauthRoutes />}>
+        
+            </Route>
+        </Routes>
     );
+
 }
+
+export default App;
