@@ -1,45 +1,57 @@
 import React from 'react';
-import { useTheme } from '@mui/material/styles';
+import { useNavigate } from "react-router-dom";
+
+import axiosInstance from '../../axios';
 
 //MUI component imports
-import { Container, Box, Avatar, Typography, TextField, Button, Link } from '@mui/material';
+import { Container, Box, Avatar, Typography, Button, Link, Paper, Alert, CircularProgress } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'; 
 
 //Form schema/validator imports
-import { object, string } from 'yup';
+import * as Yup from 'yup';
 
 //Form handler imports
-import { useFormik } from 'formik';
+import { Formik, Form } from 'formik';
 
-const validationSchema = object({
-    email: string('Enter your email').email('Enter a valid email').required('Email is required'),
-    password: string('Enter your password').min(8, 'Password should be of minimum 8 characters length').required('Password is required'),
+//Auth import
+import { useAuth } from '../../components/AuthProvider/AuthProvider';
+
+//Custom formik form elements
+import TextFieldWrapper from '../../components/TextFieldWrapper/TextFieldWrapper';
+
+const validationSchema = Yup.object({
+    email: Yup.string('Enter your email').email('Enter a valid email').required('Email is required'),
+    password: Yup.string('Enter your password').min(8, 'Password should be of minimum 8 characters length').required('Password is required'),
 });
 
-function Login() {
-    const theme = useTheme();
+const initialValues = {
+    email: '',
+    password: '',
+};
 
-    const formik = useFormik({
-        initialValues: {
-            email: 'foobar@example.com',
-            password: 'foobar',
-        },
-        validationSchema: validationSchema,
-        onSubmit: (values) => {
-            console.log(values);
-        },
-    });
+function Login() {
+
+    const { setNewSessionTimed } = useAuth();
+    const navigate = useNavigate();
+
+    function navigateToRegister() {
+        navigate('/register');
+    }
 
     return (
         // Container centers login card
-        <Container 
-            component="main" 
-            maxWidth="xs" 
-            sx={{ 
-                p: 4, 
-                borderRadius: 8,
-                boxShadow: '0px 0px 4px 2px rgba(0, 0, 0, 0.1)',
-            }}>
+        <Container component="main" maxWidth="xs"> 
+        <Box 
+            component="img" 
+            alt="Logo"
+            sx={{
+                height: 175,
+                width: 175,
+                mb: 0,
+            }}
+            src="logo_no_bg.png"
+        />
+        <Paper elevation={4} sx={{ p: 4, borderRadius: 8, }}>
             <Box display="flex" alignItems="center" flexDirection="column">
                 <Avatar sx={{ bgcolor: 'secondary.main' }}>
                     <LockOutlinedIcon />
@@ -47,48 +59,67 @@ function Login() {
                 <Typography component="h1" variant="h5" sx={{ mt: 2 }}>
                     Sign in
                 </Typography>
-                <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 2, mb: 2 }}>
-                    <TextField
-                        required
-                        fullWidth
-                        id="email"
-                        name="email"
-                        label="Email"
-                        variant="outlined"
-                        sx={{ mb: 2 }}
 
-                        value={formik.values.email}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.email && Boolean(formik.errors.email)}
-                        helperText={formik.touched.email && formik.errors.email}
-                    />
-                    <TextField
-                        required
-                        fullWidth
-                        id="password"
-                        name="password"
-                        label="Password"
-                        type="password"
-                        variant="outlined"
-                        sx={{ mb: 2 }}
+                <Formik
+                    initialValues={{...initialValues}}
+                    validationSchema={validationSchema}
+                    onSubmit={async (values, {setStatus}) => {
+                        try {
+                            //Dont use login to prevent page reload
+                            const response = await axiosInstance.post('/login', values);
+                            setNewSessionTimed(response.data, 500);
+                        }
+                        catch (error) {
 
-                        value={formik.values.password}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.password && Boolean(formik.errors.password)}
-                        helperText={formik.touched.password && formik.errors.password}
-                    />
-                    <Button color="primary" variant="contained" fullWidth type="submit" sx={{ mb: 2 }}>
-                        Submit
-                    </Button>
-                </Box>
+                            if (error.response) {
+                                setStatus({message: error.response.data['message']});
+                            }
+                            else {
+                                setStatus({message: 'Did not receive response from server'});
+                            }
+                        }
+                    }}
+                >
+                {({ status, isSubmitting }) => (
+                <Form>
+                    { (status && status.message) ? <Alert severity="error">{status.message}</Alert> : null }
+                    <Box sx={{ mt: 2, mb: 2 }}>
+                        <TextFieldWrapper
+                            required
+                            id="email"
+                            name="email"
+                            label="Email"
+                            sx={{ mb: 2 }}
+                        />
+                        <TextFieldWrapper
+                            required
+                            id="password"
+                            name="password"
+                            label="Password"
+                            type="password"
+                            sx={{ mb: 2 }}
+                        />
+                    </Box>
+                    { isSubmitting ? 
+                            <CircularProgress sx={{ mb: 2}}/> 
+                            :
+                            <Button color="primary" variant="contained" fullWidth type="submit" sx={{ mb: 2 }}>
+                                Submit
+                            </Button>
+                    }
+                </Form>
+                )}
+                </Formik>
+                
+                 
 
-                <Link href="#" variant="body2">
+
+                <Link onClick={navigateToRegister} variant="body2">
                     Don't have an account? Sign Up
                 </Link>
 
             </Box>
+        </Paper>
         </Container>
     );
 
