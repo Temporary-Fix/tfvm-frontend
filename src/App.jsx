@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom"
 
 //Component imports
 import BackgroundMap from './components/BackgroundMap/BackgroundMap'
+import Map from './pages/Map/Map'
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
 import Landing from './pages/Landing/Landing'
@@ -19,10 +20,11 @@ function App() {
 
     return (
         <Routes>
-        { /* <Route path='/' element={ <BackgroundMap location={location} /> } /> */ }
+
             <Route element={<PrivateRoutes/>}>
                 <Route path='/' element={ <Landing /> } />
-                <Route path='/map' element={ <BackgroundMap location={location} map_id={mapId} api_key={apiKey} /> } />
+                <Route path='/map' element={ <Map /> } />
+                // <Route path='/map' element={ <BackgroundMap location={location} map_id={mapId} api_key={apiKey} /> } />
             </Route>
             
             <Route element={<UnauthRoutes/>}>
