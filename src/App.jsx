@@ -24,7 +24,6 @@ function App() {
             <Route element={<PrivateRoutes/>}>
                 <Route path='/' element={ <Landing /> } />
                 <Route path='/map' element={ <Map /> } />
-                // <Route path='/map' element={ <BackgroundMap location={location} map_id={mapId} api_key={apiKey} /> } />
             </Route>
             
             <Route element={<UnauthRoutes/>}>
