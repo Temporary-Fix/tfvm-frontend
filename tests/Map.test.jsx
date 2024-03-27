@@ -1,15 +1,16 @@
 import { render, screen } from '@testing-library/react';
-import BackgroundMap from '../src/components/BackgroundMap/BackgroundMap.jsx'
+import { expect, describe, it } from 'vitest'
+import Map from '../src/pages/Map/Map'
 
-const location = { lat: 30.5446, lng: -87.2120 };
+describe('Map component', () => {
+    render(<Map/>);
 
-// TODO: Migrate to vitest because vite-jest hasn't been maintained for over 2 years
-describe('Test suite', () => {
-    // render(<Map/>);
-    // render(<BackgroundMap location={location} />);
-    // const linkElement = screen.getByText("Temp Fix Travel Planner");
-    // expect(linkElement).toBeInTheDocument();
-    it('basic test', () => {
+    it('renders title', () => {
+        const linkElement = screen.getByText("Temp Fix Travel Planner");
+        expect(linkElement).toBeInTheDocument();
+    });
+
+    it('works', () => {
         expect(1 + 2).toBe(3)
-    })
+    });
 });

@@ -1,5 +1,4 @@
 import { Container, Typography, Tab, Tabs, Box, Paper, CssBaseline } from '@mui/material';
-import { useAuth } from '../../components/AuthProvider/AuthProvider';
 import React, { useState } from 'react';
 import BackgroundMap from '../../components/BackgroundMap/BackgroundMap'
 
@@ -31,7 +30,7 @@ export default function Map() {
             <Box sx={{ p: 3, bgcolor: '#cfe8fc', borderRadius: 8 }}>
 
                 <Typography component="h1" variant="h4" sx={{ my: 2 }}>
-                    PlaceHolder
+                    Temp Fix Travel Planner
                 </Typography>
 
                 <Tabs
