@@ -26,5 +26,13 @@ export default defineConfig(({ mode }) => {
                 },
             },
         },
+        test: {
+            environment: 'jsdom',
+            globals: true,
+            setupFiles: 'tests/.setupTests.js',
+            coverage: {
+                all: false
+            }
+        }
     };
 });
